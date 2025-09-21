@@ -1,137 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MediQuickRx - Refill Your Prescription</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f7f9fc;
-  }
-  header {
-    background-color: #4caf50;
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  header h1 {
-    margin: 0;
-  }
-  nav a {
-    color: white;
-    margin-left: 15px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  .hero {
-    text-align: center;
-    padding: 50px 20px;
-    background: #e8f5e9;
-  }
-  .hero h2 {
-    margin-bottom: 20px;
-  }
-  .hero button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  .container {
-    max-width: 600px;
-    margin: 40px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  input, select, button {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
-  button.submit-btn {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-  }
-  .confirmation {
-    text-align: center;
-    padding: 20px;
-    background: #dcedc8;
-    border-radius: 10px;
-    display: none;
-    margin-top: 20px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediQuickRx - Prescription Refill</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f9fc;
+      color: #333;
+    }
+
+    header {
+      background-color: #005eb8;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    nav {
+      background-color: #003f7d;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #005eb8;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    form label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    form button {
+      background-color: #005eb8;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #004080;
+    }
+
+    .products {
+      margin-top: 40px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .product-card img {
+      max-width: 100px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #003f7d;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+
+    /* Chat Bubble */
+    #divicw {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #005eb8;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 25px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>MediQuickRx</h1>
+    <p>Your trusted partner in healthcare</p>
+  </header>
 
-<header>
-  <h1>MediQuickRx1</h1>
   <nav>
     <a href="#">Home</a>
-    <a href="#">Refill Prescription</a>
-    <a href="#">My Medications</a>
-    <a href="#">Contact Us</a>
+    <a href="#">Refill</a>
+    <a href="#">Products</a>
+    <a href="#">Contact</a>
   </nav>
-</header>
 
-<section class="hero">
-  <h2>Refill your prescriptions in seconds!</h2>
-  <button onclick="scrollToRefill()">Refill Now</button>
-</section>
+  <div class="container">
+    <h2>Refill Your Prescription</h2>
+    <form>
+      <label for="drugName">Medication Name</label>
+      <input list="medications" id="drugName" name="drugName" placeholder="Search medication...">
+      <datalist id="medications">
+        <option value="Lipitor">
+        <option value="Metformin">
+        <option value="Amoxicillin">
+        <option value="Tylenol">
+        <option value="Ativan">
+        <option value="Zoloft">
+        <option value="Crestor">
+      </datalist>
 
-<div class="container" id="refill-section">
-  <h3>Refill Prescription</h3>
-  <form id="refillForm">
-    <input type="text" id="prescriptionNumber" placeholder="Enter Prescription Number" required>
-    <input type="text" id="medicationName" placeholder="Medication Name" required>
-    <select id="pharmacyLocation" required>
-      <option value="">Select Pharmacy Location</option>
-      <option value="Main Street Pharmacy">Main Street Pharmacy</option>
-      <option value="HealthPlus Pharmacy">HealthPlus Pharmacy</option>
-      <option value="Downtown Pharmacy">Downtown Pharmacy</option>
-    </select>
-    <button type="submit" class="submit-btn">Submit Refill</button>
-  </form>
-  <div class="confirmation" id="confirmationMessage">
-    <h3>✅ Your prescription has been successfully refilled!</h3>
-    <p>Pickup at your selected pharmacy within 2 hours.</p>
+      <label for="dosage">Dosage</label>
+      <select id="dosage" name="dosage">
+        <option>10mg</option>
+        <option>20mg</option>
+        <option>50mg</option>
+        <option>100mg</option>
+      </select>
+
+      <label for="pickupDate">Pickup Date</label>
+      <input type="date" id="pickupDate" name="pickupDate">
+
+      <label for="duration">Duration (days)</label>
+      <input type="number" id="duration" name="duration" min="1" max="90">
+
+      <label for="location">Pickup Location</label>
+      <select id="location" name="location">
+        <option value="downtown">Downtown Pharmacy - 123 Main St</option>
+        <option value="uptown">Uptown Pharmacy - 456 Oak Ave</option>
+        <option value="suburb">Suburb Pharmacy - 789 Pine Rd</option>
+      </select>
+
+      <label for="prescription">Doctor Prescription (Upload)</label>
+      <input type="file" id="prescription" name="prescription">
+
+      <button type="submit">Submit Refill Request</button>
+    </form>
   </div>
-</div>
 
-<script>
-function scrollToRefill() {
-  document.getElementById('refill-section').scrollIntoView({ behavior: 'smooth' });
-}
+  <!-- Featured Products -->
+  <section class="products container">
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="https://cdn.pixabay.com/photo/2016/11/18/16/46/pills-1839518_1280.jpg" alt="Lipitor">
+        <h3>Lipitor</h3>
+        <p>Helps manage cholesterol levels.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.pixabay.com/photo/2014/12/29/15/37/pills-583773_1280.jpg" alt="Metformin">
+        <h3>Metformin</h3>
+        <p>Trusted medication for diabetes management.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.pixabay.com/photo/2018/01/26/18/15/medicine-3113661_1280.jpg" alt="Amoxicillin">
+        <h3>Amoxicillin</h3>
+        <p>Effective antibiotic for infections.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.pixabay.com/photo/2016/11/29/12/54/medications-1867066_1280.jpg" alt="Tylenol">
+        <h3>Tylenol</h3>
+        <p>Relief from pain and fever.</p>
+      </div>
+    </div>
+  </section>
 
-document.getElementById('refillForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const prescription = document.getElementById('prescriptionNumber').value;
-  const medication = document.getElementById('medicationName').value;
-  const location = document.getElementById('pharmacyLocation').value;
+  <footer>
+    <p>&copy; 2025 MediQuickRx. All Rights Reserved.</p>
+  </footer>
+  <div id="divicw" data-bind="EF621F57-FB8D-4001-9C02-12388B88459B" data-org=""></div><script>var i={t:function(t){var e="https://media.imi.chat/widget/js/imichatinit.js";try{var o=new XMLHttpRequest;o.onreadystatechange=function(){if(this.readyState==4){var t=document.getElementById("divicw");if(this.status==0){i.o(t);return}var e=document.createElement("script");e.innerHTML=this.responseText;t.parentNode.insertBefore(e,t.nextSibling)}};o.open("GET",e,true);o.send()}catch(s){console.error(s)}},o:function(t){t.insertAdjacentHTML("afterend",'<iframe id="tls_al_frm" frameborder="0" style="overflow: hidden;height: 208px;width: 394px;position: fixed;display: block;right: 48px;bottom: 12px;z-index: 99999; display:none;"></iframe>');var e=document.getElementById("tls_al_frm");var o=e.contentWindow||(e.contentDocument.document||e.contentDocument);o.document.open();o.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Untitled Document</title><style>body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;color: #99a0b0;font-size: 14px;}.popover__content{background-color: #fbfbfe; padding: 1.5rem; border-radius: 5px; width: 300px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);position: relative;}.popover__message{font-weight: 600;color:#56627c;font-size: 16px;}.pull-left{float:left;}.clearfix{clear: both;}.hdr-txt{width: 218px; margin-top: 3px;}.para-txt a{text-decoration: none;color: #005cde;}.close-btn{position: absolute;right:15px;top:15px;}.close-btn a{text-decoration: none;font-weight: 400; color: #56627c; font-size: 16px;}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget. </p></div><script>function closeTLSAlert(){window.parent.postMessage({key: "close_tls_alert",value: "close_tls_alert",action: "close_tls_alert"}, "*");}<\/script></body></html>');o.document.close();e.style.display="block";window.addEventListener("message",function(t){if(t.data.action=="close_tls_alert"){i.s()}})},s:function(){var t=document.getElementById("tls_al_frm");t.remove()}};i.t(function(t){});</script>
 
-  if(prescription && medication && location) {
-    document.getElementById('confirmationMessage').style.display = 'block';
-    this.reset();
-  } else {
-    alert('Please fill all fields!');
-  }
-});
-</script>
-<div id="divicw" data-bind="EF621F57-FB8D-4001-9C02-12388B88459B" data-org=""></div><script>var i={t:function(t){var e="https://media.imi.chat/widget/js/imichatinit.js";try{var o=new XMLHttpRequest;o.onreadystatechange=function(){if(this.readyState==4){var t=document.getElementById("divicw");if(this.status==0){i.o(t);return}var e=document.createElement("script");e.innerHTML=this.responseText;t.parentNode.insertBefore(e,t.nextSibling)}};o.open("GET",e,true);o.send()}catch(s){console.error(s)}},o:function(t){t.insertAdjacentHTML("afterend",'<iframe id="tls_al_frm" frameborder="0" style="overflow: hidden;height: 208px;width: 394px;position: fixed;display: block;right: 48px;bottom: 12px;z-index: 99999; display:none;"></iframe>');var e=document.getElementById("tls_al_frm");var o=e.contentWindow||(e.contentDocument.document||e.contentDocument);o.document.open();o.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Untitled Document</title><style>body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;color: #99a0b0;font-size: 14px;}.popover__content{background-color: #fbfbfe; padding: 1.5rem; border-radius: 5px; width: 300px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);position: relative;}.popover__message{font-weight: 600;color:#56627c;font-size: 16px;}.pull-left{float:left;}.clearfix{clear: both;}.hdr-txt{width: 218px; margin-top: 3px;}.para-txt a{text-decoration: none;color: #005cde;}.close-btn{position: absolute;right:15px;top:15px;}.close-btn a{text-decoration: none;font-weight: 400; color: #56627c; font-size: 16px;}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget. </p></div><script>function closeTLSAlert(){window.parent.postMessage({key: "close_tls_alert",value: "close_tls_alert",action: "close_tls_alert"}, "*");}<\/script></body></html>');o.document.close();e.style.display="block";window.addEventListener("message",function(t){if(t.data.action=="close_tls_alert"){i.s()}})},s:function(){var t=document.getElementById("tls_al_frm");t.remove()}};i.t(function(t){});</script>
 </body>
 </html>
