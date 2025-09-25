@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
-
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
-
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -119,18 +109,6 @@
     padding: 15px;
     margin-top: 40px;
   }
-  #divicw {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #005eb8;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 25px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    cursor: pointer;
-    font-weight: bold;
-  }
 </style>
 </head>
 <body>
@@ -150,6 +128,10 @@
 <div class="container">
   <h2>Refill Your Prescription</h2>
   <form id="refillForm">
+
+    <label for="customerId">Customer ID</label>
+    <input type="text" id="customerId" name="customerId" placeholder="Enter your Customer ID" required>
+
     <label for="drugName">Medication Name</label>
     <input list="medications" id="drugName" name="drugName" placeholder="Search medication...">
     <datalist id="medications">
@@ -173,8 +155,8 @@
     <label for="pickupDate">Pickup Date</label>
     <input type="date" id="pickupDate" name="pickupDate">
 
-    <label for="duration">Duration (days)</label>
-    <input type="number" id="duration" name="duration" min="1" max="90">
+    <label for="refillSupply">Refill Required (days)</label>
+    <input type="number" id="refillSupply" name="refillSupply" min="1" max="90" required>
 
     <label for="location">Pickup Location</label>
     <select id="location" name="location">
@@ -190,9 +172,7 @@
   </form>
 
   <!-- Confirmation Message -->
-  <div class="confirmation" id="confirmationMessage">
-    ✅ Your refill request has been submitted successfully!
-  </div>
+  <div class="confirmation" id="confirmationMessage"></div>
 </div>
 
 <!-- Featured Products -->
@@ -229,48 +209,76 @@
 <!-- Chat Bubble -->
 <div id="divicw" data-bind="EF621F57-FB8D-4001-9C02-12388B88459B" data-org=""></div><script>var i={t:function(t){var e="https://media.imi.chat/widget/js/imichatinit.js";try{var o=new XMLHttpRequest;o.onreadystatechange=function(){if(this.readyState==4){var t=document.getElementById("divicw");if(this.status==0){i.o(t);return}var e=document.createElement("script");e.innerHTML=this.responseText;t.parentNode.insertBefore(e,t.nextSibling)}};o.open("GET",e,true);o.send()}catch(s){console.error(s)}},o:function(t){t.insertAdjacentHTML("afterend",'<iframe id="tls_al_frm" frameborder="0" style="overflow: hidden;height: 208px;width: 394px;position: fixed;display: block;right: 48px;bottom: 12px;z-index: 99999; display:none;"></iframe>');var e=document.getElementById("tls_al_frm");var o=e.contentWindow||(e.contentDocument.document||e.contentDocument);o.document.open();o.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Untitled Document</title><style>body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;color: #99a0b0;font-size: 14px;}.popover__content{background-color: #fbfbfe; padding: 1.5rem; border-radius: 5px; width: 300px; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);position: relative;}.popover__message{font-weight: 600;color:#56627c;font-size: 16px;}.pull-left{float:left;}.clearfix{clear: both;}.hdr-txt{width: 218px; margin-top: 3px;}.para-txt a{text-decoration: none;color: #005cde;}.close-btn{position: absolute;right:15px;top:15px;}.close-btn a{text-decoration: none;font-weight: 400; color: #56627c; font-size: 16px;}</style></head><body><div class="popover__content"><div class="close-btn"><a href="#" onclick="closeTLSAlert();">X</a></div><div class="popover__message"><div class="pull-left hdr-txt">This browser version is not supported on LiveChat.</div></div><div class="clearfix"></div><p class="para-txt">Please update your browser to the latest version and re-open the website to access the widget. </p></div><script>function closeTLSAlert(){window.parent.postMessage({key: "close_tls_alert",value: "close_tls_alert",action: "close_tls_alert"}, "*");}<\/script></body></html>');o.document.close();e.style.display="block";window.addEventListener("message",function(t){if(t.data.action=="close_tls_alert"){i.s()}})},s:function(){var t=document.getElementById("tls_al_frm");t.remove()}};i.t(function(t){});</script>
 
-<!-- JavaScript for confirmation and API call -->
+
+<!-- JavaScript for conditional fulfillment and WxCC API -->
 <script>
-  const form = document.getElementById('refillForm');
-  const confirmation = document.getElementById('confirmationMessage');
+const form = document.getElementById('refillForm');
+const confirmation = document.getElementById('confirmationMessage');
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault(); // prevent default form submission
+form.addEventListener('submit', function(e) {
+  e.preventDefault(); // prevent default form submission
 
-    // Show confirmation message
-    confirmation.style.display = 'block';
+  // Collect form values
+  const formData = {
+    customerId: document.getElementById('customerId').value,
+    drugName: document.getElementById('drugName').value,
+    dosage: document.getElementById('dosage').value,
+    pickupDate: document.getElementById('pickupDate').value,
+    refillSupply: document.getElementById('refillSupply').value,
+    location: document.getElementById('location').value
+  };
 
-    // Prepare data to send to WxCC
-    const formData = {
-      drugName: document.getElementById('drugName').value,
-      dosage: document.getElementById('dosage').value,
-      pickupDate: document.getElementById('pickupDate').value,
-      duration: document.getElementById('duration').value,
-      location: document.getElementById('location').value
-    };
+  // Determine fulfillment message based on refillSupply
+  let fulfillmentMessage = "";
+  if (parseInt(formData.refillSupply) === 3) {
+    fulfillmentMessage = "✅ Your refill request is successful!";
+  } else if (parseInt(formData.refillSupply) === 5) {
+    fulfillmentMessage = "❌ Fulfillment failed. Please call us at 1800RxFILL or chat with us on this page.";
+  } else {
+    fulfillmentMessage = "Your refill request is being processed.";
+  }
 
-    // Example API call to Webex Contact Center
-    fetch('https://your-wxcc-endpoint.com/api/refill', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_WXCC_API_TOKEN'
-      },
-      body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('WxCC Response:', data);
-    })
-    .catch(error => {
-      console.error('Error sending to WxCC123:', error);
-    });
+  // Show fulfillment message in the UI
+  confirmation.style.display = 'block';
+  confirmation.innerText = fulfillmentMessage;
+
+  // Construct CloudEvent for WxCC including fulfillment message
+  const wxccEvent = {
+    id: crypto.randomUUID(),
+    specversion: "1.0",
+    type: "MedicineEntered",
+    source: "PharmacyWebForm",
+    identity: formData.customerId,
+    identitytype: "customerId",
+    datacontenttype: "application/json",
+    data: {
+      customerId: formData.customerId,
+      medicineName: formData.drugName,
+      dosage: formData.dosage,
+      pickupDate: formData.pickupDate,
+      refillSupply: formData.refillSupply + " days",
+      location: formData.location,
+      fulfillmentMessage: fulfillmentMessage
+    }
+  };
+
+  // Send API call to WxCC
+  fetch('https://api.wxcc-us1.cisco.com/publish/v1/api/event?workspaceId=65171e0682b7f52b9209b39d', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer YzExYzZhMDEtYmQxNy00ODZiLWE4NDQtODNlMTcxZGJiMWIwZThlMjliZGYtNTZh_P0A1_e56f00d4-98d8-4b62-a165-d05a41243d98' // replace with real token
+    },
+    body: JSON.stringify(wxccEvent)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('WxCC Response:', data);
+  })
+  .catch(error => {
+    console.error('Error sending to WxCC:', error);
   });
+});
 </script>
 </body>
 </html>
-
-
-</body>
-</html>
-
